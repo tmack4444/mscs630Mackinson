@@ -44,7 +44,7 @@ public class Driver_Lab3a {
                 //System.out.println("x: " + x);
                 if(l != j){
                   //System.out.println("ADD");
-                  aDet[x][y] = a[k][l];
+                  aDet[x][y] = a[l][k];
                   x++;
                 }
 
