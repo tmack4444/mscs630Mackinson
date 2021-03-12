@@ -18,19 +18,51 @@ public class Driver_Lab3a {
 
   public static int cofModDet(int m, int [][] a){
     if(a.length == 1){
-      return a[0][0];
+      return Math.floorMod(a[0][0], m);
     }
     if(a.length == 2){
-      return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0]);
+      int A = Math.floorMod(a[0][0], m);
+      int B = Math.floorMod(a[1][1], m);
+      int C = Math.floorMod(a[0][1], m);
+      int D = Math.floorMod(a[1][0], m);
+      return Math.floorMod((A * B - C * D), m);
     }
     int result = 1;
+    boolean plus = true;        // keep track of if we are adding or subtracting our determinant
     for(int i = 0; i < a.length; i++){
       for(int j = 0; j < a[i].length; j++){
-        result *= a[i][j] * cofModDet(m, recDet);
-      }
-    }
 
-    return 0;
-  }
+          int[][] aDet = new int[a.length-1][a.length-1];
+          int x = 0;
+          int y = 0;
+
+          for(int k = 0; k < a.length; k++){
+            System.out.println("y: " + x);
+            if(k != i){
+
+              for(int l = 0; l < a.length; l++){
+                System.out.println("x: " + x);
+                if(l != j){
+                  System.out.println("ADD");
+                  aDet[x][y] = a[k][l];
+                  x++;
+                }
+
+              }
+              y++;
+            }
+          }
+
+            if(plus){
+              result += a[i][j] * cofModDet(m, aDet);
+              plus = false;
+            } else {
+              result -= a[i][j] * cofModDet(m, aDet);
+              plus = true;
+            }
+        }
+      }
+      return Math.floorMod(result,m);
+    }
 
 }
