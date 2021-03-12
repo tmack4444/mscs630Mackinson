@@ -2,17 +2,20 @@ import java.util.Scanner;
 
 class Driver_Lab2a{
   public static void main(String [] args){
+    String output = "";
     Scanner in = new Scanner(System.in);
     while(in.hasNext()){
-      long a = in.nextInt();
-      long b = in.nextInt();
+      long a = in.nextLong();
+      long b = in.nextLong();
       if(a < b){
         long temp = a;
         a = b;
         b = temp;
       }
-      System.out.println(euclidAlg(a, b));
+      output += euclidAlg(a, b) + "\n";
     }
+    output = output.trim();
+    System.out.print(output);
   }
 
   public static long euclidAlg(long a, long b){
