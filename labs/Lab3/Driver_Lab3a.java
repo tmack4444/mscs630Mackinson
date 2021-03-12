@@ -20,6 +20,15 @@ public class Driver_Lab3a {
     if(a.length == 1){
       return a[0][0];
     }
+    if(a.length == 2){
+      return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0]);
+    }
+    int result = 1;
+    for(int i = 0; i < a.length; i++){
+      for(int j = 0; j < a[i].length; j++){
+        result *= a[i][j] * cofModDet(m, recDet);
+      }
+    }
 
     return 0;
   }
