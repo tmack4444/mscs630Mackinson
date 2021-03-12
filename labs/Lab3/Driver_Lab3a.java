@@ -37,18 +37,19 @@ public class Driver_Lab3a {
           int y = 0;
 
           for(int k = 0; k < a.length; k++){
-            System.out.println("y: " + x);
+            //System.out.println("y: " + x);
             if(k != i){
 
               for(int l = 0; l < a.length; l++){
-                System.out.println("x: " + x);
+                //System.out.println("x: " + x);
                 if(l != j){
-                  System.out.println("ADD");
+                  //System.out.println("ADD");
                   aDet[x][y] = a[k][l];
                   x++;
                 }
 
               }
+              x = 0;
               y++;
             }
           }
