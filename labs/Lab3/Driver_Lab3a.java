@@ -40,16 +40,19 @@ public class Driver_Lab3a {
               for(int l = 0; l < a.length; l++){
                 //System.out.println("x: " + x);
                 if(l != 0){
-                  //System.out.println("ADD");
+                  System.out.print(a[l][k] + " ");
                   aDet[x][y] = a[l][k];
                   x++;
                 }
 
               }
+              System.out.println();
               x = 0;
               y++;
             }
           }
+          System.out.println();
+          
 
             if(plus){
               result += Math.floorMod( (Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
