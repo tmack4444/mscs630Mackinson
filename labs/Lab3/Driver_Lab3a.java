@@ -21,24 +21,12 @@ public class Driver_Lab3a {
       return Math.floorMod(a[0][0], m);
     }
     if(a.length == 2){
-      //System.out.println(a[0][0] + " " + a[0][1]);
-      //System.out.println(a[1][0] + " " + a[1][1]);
-      //System.out.println();
       int A = Math.floorMod(a[0][0], m);
       int B = Math.floorMod(a[0][1], m);
       int C = Math.floorMod(a[1][0], m);
       int D = Math.floorMod(a[1][1], m);
       int ad = Math.floorMod(A * D, m);
       int bc = Math.floorMod(B * C, m);
-      //System.out.println("m: " + m);
-    //  System.out.println("A: " + A);
-    //  System.out.println("B: " + B);
-    //  System.out.println("C: " + C);
-    //  System.out.println("D: " + D);
-      //System.out.println("ad: " + ad);
-    //  System.out.println("bc: " + bc);
-    //  System.out.println(Math.floorMod((ad - bc), m) );
-    //  System.out.println();
       return Math.floorMod((ad - bc), m);
     }
     int result = 0;
@@ -48,36 +36,24 @@ public class Driver_Lab3a {
           int x = 0;
           int y = 0;
           for(int k = 0; k < a.length; k++){
-            //System.out.println("y: " + x);
             if(k != i){
-
               for(int l = 0; l < a.length; l++){
-                //System.out.println("x: " + x);
                 if(l != 0){
-                  //System.out.print(a[k][l] + " ");
                   aDet[x][y] = a[l][k];
                   x++;
                 }
-
               }
-              //System.out.println();
               x = 0;
               y++;
             }
           }
-          //System.out.println();
-
-            //System.out.println("i: " + i);
             if(plus){
-              //System.out.println("PLUS");
               result = Math.floorMod(result + Math.floorMod((Math.floorMod(a[0][i], m) * cofModDet(m, aDet)), m), m);
               plus = false;
             } else {
-              //System.out.println("MINUS");
               result = Math.floorMod(result - Math.floorMod((Math.floorMod(a[0][i], m) * cofModDet(m, aDet)), m), m);
               plus = true;
             }
-            //System.out.println(result);
       }
       return result;
     }
