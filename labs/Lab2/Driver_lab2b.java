@@ -14,22 +14,29 @@ public class Driver_lab2b{
       System.out.println(result[2]);
     }
   }
-
+  /*
+   * Ok, I took a ton of time to get here but just to be sure I don't forget...
+   * So, this works by calculating our x and y as we calculate the gcd
+   * Instead of calculating the GCD and working backwards, I'm working backwards forwards
+   * That probably doesn't make any sense, but basically rather than use the remainders, quotients
+   * and other values we generate to work backwards to create our x and y, I Instead
+   * use those values as we generate the GCD. We end up at the same result, and it doesn't
+   * require me to do anything confusing, like create a string of all the vars and then somehow
+   * turn that string into a formula with the values parsed in... That's where I was going before this
+   */
   public static long[] euclidAlgExt(long a, long b) {
       long remainder = -1;
+      long temp = 0;
       long q = 0;
       long x = 0;
       long y = 1;
-      long x1 = 1
+      long x1 = 1;
       long y1 = 0;
       long saveA = a;
       long saveB = b;
-      //the steps arraylist will store the values from each step in the process, so that we can work back up to the x and y values in part b
-      ArrayList<Long[]> steps = new ArrayList<Long[]>();
-      Long step[] = new Long[4];
       long result[] = new long[3];
       if(a < b){
-        long temp = a;
+        temp = a;
         a = b;
         b = temp;
       }
@@ -39,33 +46,19 @@ public class Driver_lab2b{
           q = a / b;
           a = b;
           b = remainder;
-          x += x - q * x;
-          y += y - q * y;
-          //step[0] = a; //our divisor
-          //step[1] = b; //our quotient
-          //step[2] = a / b; // our potential divisor
-          //step[3] = remainder; // our remainder
 
-          steps.add(step);
+          temp = x;
+          x = x1 - q * x;
+          x1 = temp;
+
+          temp = y;
+          y = y1 - q * y;
+          y1 = temp;
+
         } else {
           q = b;
         }
       }while(remainder != 0);
-      ArrayList<Long> backwardsSteps = new ArrayList<Long>(); //Probably not the best way to do this but I need something that works
-      /* we need to find x and y such that ax + by = q
-        So work backwards. d = q - m * d
-        Where d is our gcd, q is our quotient from the last step, m is our multiplier and d is our divisor
-        So we use the value of r from each step, and find any vars that match that value
-        We then substitute their values for q - m * d from the step above
-        Finally, we just have to simplify the array list down until it's in terms of x * a + y * break;
-
-
-      */
-      //while(a * x + b * y != q){
-
-    //  }
-      //System.out.println(u);
-    //  System.out.println(v);
       result[0] = b;
       result[1] = x;
       result[2] = y;
