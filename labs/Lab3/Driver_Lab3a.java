@@ -30,19 +30,16 @@ public class Driver_Lab3a {
     int result = 1;
     boolean plus = true;        // keep track of if we are adding or subtracting our determinant
     for(int i = 0; i < a.length; i++){
-      for(int j = 0; j < a[i].length; j++){
-
           int[][] aDet = new int[a.length-1][a.length-1];
           int x = 0;
           int y = 0;
-
           for(int k = 0; k < a.length; k++){
             //System.out.println("y: " + x);
             if(k != i){
 
               for(int l = 0; l < a.length; l++){
                 //System.out.println("x: " + x);
-                if(l != j){
+                if(l != 0){
                   //System.out.println("ADD");
                   aDet[x][y] = a[l][k];
                   x++;
@@ -55,13 +52,12 @@ public class Driver_Lab3a {
           }
 
             if(plus){
-              result += a[i][j] * cofModDet(m, aDet);
+              result += Math.floorMod( (Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
               plus = false;
             } else {
-              result -= a[i][j] * cofModDet(m, aDet);
+              result -= Math.floorMod( (Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
               plus = true;
             }
-        }
       }
       return Math.floorMod(result,m);
     }
