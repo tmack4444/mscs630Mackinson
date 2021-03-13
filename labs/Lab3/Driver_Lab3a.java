@@ -67,15 +67,17 @@ public class Driver_Lab3a {
           }
           //System.out.println();
 
-            System.out.println("i: " + i);
+            //System.out.println("i: " + i);
             if(plus){
-              result +=  Math.floorMod((Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
+              //System.out.println("PLUS");
+              result = Math.floorMod(result + Math.floorMod((Math.floorMod(a[0][i], m) * cofModDet(m, aDet)), m), m);
               plus = false;
             } else {
-              result -= Math.floorMod((Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
+              //System.out.println("MINUS");
+              result = Math.floorMod(result - Math.floorMod((Math.floorMod(a[0][i], m) * cofModDet(m, aDet)), m), m);
               plus = true;
             }
-            System.out.println(result);
+            //System.out.println(result);
       }
       return result;
     }
