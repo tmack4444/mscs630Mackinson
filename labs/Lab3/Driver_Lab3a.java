@@ -35,13 +35,13 @@ public class Driver_Lab3a {
           int y = 0;
           for(int k = 0; k < a.length; k++){
             //System.out.println("y: " + x);
-            if(k != i){
+            if(k != 0){
 
               for(int l = 0; l < a.length; l++){
                 //System.out.println("x: " + x);
-                if(l != 0){
-                  System.out.print(a[l][k] + " ");
-                  aDet[x][y] = a[l][k];
+                if(l != i){
+                  System.out.print(a[k][l] + " ");
+                  aDet[x][y] = a[k][l];
                   x++;
                 }
 
@@ -52,7 +52,7 @@ public class Driver_Lab3a {
             }
           }
           System.out.println();
-          
+
 
             if(plus){
               result += Math.floorMod( (Math.floorMod(a[i][0], m) * cofModDet(m, aDet)), m);
