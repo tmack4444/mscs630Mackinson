@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.lang.Byte;
 
 public class Driver_lab3b {
 
@@ -9,32 +8,36 @@ public class Driver_lab3b {
     String pad = in.nextLine();
     String P = in.nextLine();
     int numPad = 16 % P.length();
-    System.out.println("P.length: " + P.length());
-    System.out.println("P.length % 16: " + 16 %  P.length() );
-    System.out.println("numPad: " + numPad);
     for(int i = 0; i < numPad; i++){
       P += pad;
     }
     int numArray = Math.max(1, P.length() / 16);
-    int result[][] = new int[4][4*numArray];
-    System.out.println("P.length: " + P.length());
-    System.out.println("numPad: " + numPad);
-    System.out.println("numArray " + numArray);
+    int[][][] results = new int[numArray][4][4];
     for(int i = 0; i < numArray; i++) {
       String p = P.substring(i*16, (i*16 + 16));
-      getHexMatP(p);
+      results[i] = getHexMatP(p);
+    }
+
+    for(int j = 0; j < numArray; j++){
+      for(int k = 0; k < 4; k++){
+        for(int l = 0; l < 4; l++){
+          System.out.print(results[j][k][l] + " ");
+        }
+        System.out.println();
+      }
+      System.out.println();
     }
   }
 
   public static int[][] getHexMatP(String p){
     int[][] result = new int[4][4];
+    int currInd = 0;
     for(int i = 0; i < 4; i++){
       for(int j = 0; j < 4; j++){
-        byte currVal = Byte.parseByte(p.charAt( (i+1 * j) ) + "" );
+        int currVal = (p.charAt(currInd) + "").getBytes()[0];
         result[i][j] = currVal;
-        System.out.print(result[i][j] + " ");
+        currInd++;
       }
-      System.out.println();
     }
     return result;
     }
