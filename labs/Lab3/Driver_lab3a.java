@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Driver_Lab3a {
+public class Driver_lab3a {
 
   public static void main(String [] args){
     Scanner in = new Scanner(System.in);
