@@ -6,9 +6,12 @@ public class Driver_lab3b {
 
   public static void main(String [] args){
     Scanner in = new Scanner(System.in);
-    String pad = in.next();
+    String pad = in.nextLine();
     String P = in.nextLine();
-    int numPad = P.length() % 16;
+    int numPad = 16 % P.length();
+    System.out.println("P.length: " + P.length());
+    System.out.println("P.length % 16: " + 16 %  P.length() );
+    System.out.println("numPad: " + numPad);
     for(int i = 0; i < numPad; i++){
       P += pad;
     }
