@@ -18,15 +18,18 @@ public class Driver_lab3b {
       results[i] = getHexMatP(p);
     }
 
+    String output = "";
     for(int j = 0; j < numArray; j++){
       for(int k = 0; k < 4; k++){
         for(int l = 0; l < 4; l++){
-          System.out.print(results[j][k][l] + " ");
+          output += (Integer.toHexString(results[j][l][k]).toUpperCase() + " ");
         }
-        System.out.println();
+        output += "\n";
       }
-      System.out.println();
+      output += "\n";
     }
+    output = output.trim();
+    System.out.print(output);
   }
 
   public static int[][] getHexMatP(String p){
