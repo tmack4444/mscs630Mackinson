@@ -1,7 +1,46 @@
 
 public class AESCipher {
 
-  public static String[] roundkeysHex = aesRoundKeys(String KeyHex){
+  public static String[] roundkeysHex = aesRoundKeys(String KeyHex){=
+    String[][] W = new String[4][44];
+    int iteration = 0;
+    //this loop will go through the columns
+    for(int i = 0; i < 44; i++){
+      //this loop will go through the rows
+      for(int j = 0; j < 4; j++){
+      // start with our base case, the first round of this we make the first 4 columns
+        if(i < 4 && j < 4){
+          W[i][j] = KeyHex.substring(iteration*2, iteration*2+1);
+        } else if(i % 4 != 0){
+          W[i][j] = Integer.parseInt(W[i][j-4]) ^ Integer.parseInt(W[i][j-1]) + "";
+        } else if(i % 4 == 0){
+          //for the construction of this col, use the previous cols elements
+          int[] wNew = W[i-1];
+          //then shift all vals to the left
+          for(int k = 0; k < 3; k++){
+            int temp = wNew[k];
+            wNew[k] = wNew[k+1];
+            wNew[k+1] = temp;
+          }
+          //Then transform each byte using an SBox junction
+          for(int l = 0; l < 4; l++){
+            wNew[l] = aesSBox(wNew[l] + "");
+          }
+          //Get the Rcon(i) constant for ith round w/ table 2
+          int rConst = aesRcon(i);
+          //perform XOR using the round constant from prev step
+          for(int p = 0; p < 4; p++){
+            wNew[p] = rConst ^ wNew[p];
+          }
+          //Finally, define w[j] as w(j) = w(j-4) XOR wNew
+          W[j-4] ^ wNew;
+
+        }
+      }
+      //now, working through instruction cases
+      //if column index is not multiple of 4, XOR the 4th past and last col
+
+    }
 
   }
 
@@ -47,5 +86,5 @@ public class AESCipher {
      0x61, 0xC2, 0x9F, 0x25, 0x4A, 0x94, 0x33, 0x66, 0xCC, 0x83, 0x1D, 0x3A, 0x74, 0xE8, 0xCB, 0x8D
   };
   int coords = Integer.parseInt(inHex, 16);
-  return S_BOX[coords];
+  return RCon[coords];
 }
