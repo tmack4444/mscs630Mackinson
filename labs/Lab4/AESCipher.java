@@ -41,7 +41,7 @@ public class AESCipher {
 
 
 
-  public static String[] roundkeysHex (String KeyHex){
+  public static String[] roundKeysHex (String KeyHex){
     int[][] W = new int[4][44];
     int iteration = 0;
     //this loop will go through the columns
