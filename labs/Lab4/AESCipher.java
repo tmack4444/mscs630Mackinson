@@ -63,7 +63,7 @@ public class AESCipher {
           //for the construction of this col, use the previous cols elements
           String[] wNew = new String [4];
           for(int copy = 0; copy < 4; copy++){
-            wNew[copy] = W[j-1][copy];
+            wNew[copy] = W[copy][j-1];
           }
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
@@ -83,7 +83,7 @@ public class AESCipher {
             //perform XOR using the round constant from prev step
             wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[j][p] = Integer.toHexString(Integer.parseInt(W[j-4][p], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
+            W[p][j] = Integer.toHexString(Integer.parseInt(W[p][j-1], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
           }
 
         }
@@ -95,10 +95,10 @@ public class AESCipher {
     result[0] = "";
     for(int c = 0; c < 44; c++){
       for(int r = 0; r < 4; r++){
-        if(W[c][r].length() == 1){
+        if(W[r][c].length() == 1){
           result[keyNum] += "0";
         }
-        result[keyNum] += W[c][r];
+        result[keyNum] += W[r][c];
         if(result[keyNum].length() >= 32){
           System.out.println(result[keyNum].toUpperCase());
           keyNum++;
