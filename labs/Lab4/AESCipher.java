@@ -42,7 +42,7 @@ public class AESCipher {
 
 
   public static String[] roundKeysHex (String KeyHex){
-    System.out.println(KeyHex);
+    //System.out.println(KeyHex);
     String[][] W = new String[44][4];
     int iteration = 0;
     //this loop will go through the columns
@@ -53,12 +53,11 @@ public class AESCipher {
       // start with our base case, the first round of this we make the first 4 columns
         if(i < 4 && j < 4){
           W[i][j] = (KeyHex.substring(iteration, iteration + 2));
-          System.out.println("Integer.parseInt(input, 16): " + Integer.parseInt( KeyHex.substring(iteration, iteration + 1), 16) );
-          System.out.println("Integer.parseInt(input): " + Integer.parseInt((KeyHex.substring(iteration, iteration + 1) + ""))) ;
-          System.out.println("Integer.toHexString(W[i][j]: " + W[i][j]);
-          System.out.println("W[i][j]: " + W[i][j]);
+          //System.out.println("i: " + i);
+          //System.out.println("j: " + j);
+          //System.out.println("W[i][j]: " + W[i][j]);
           iteration += 2;
-          System.out.println("iteration: " + iteration);
+          //System.out.println("iteration: " + iteration);
           //now, working through instruction cases
           //if column index is not multiple of 4, XOR the 4th past and last col
         } else if(i % 4 != 0){
@@ -74,11 +73,11 @@ public class AESCipher {
             String temp = wNew[k];
             wNew[k] = wNew[k+1];
             wNew[k+1] = temp;
-            System.out.println("wNew[k]: " + wNew[k]);
+            //System.out.println("wNew[k]: " + wNew[k]);
           }
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
-            System.out.println("wNew[l]: " + wNew[l]);
+            //System.out.println("wNew[l]: " + wNew[l]);
             wNew[l] = aesSBox(wNew[l] + "");
           }
           //Get the Rcon(i) constant for ith round w/ table 2
@@ -96,14 +95,19 @@ public class AESCipher {
     }
     String[] result = new String[11];
     int keyNum = 0;
+    result[0] = "";
     for(int c = 0; c < 44; c++){
       for(int r = 0; r < 4; r++){
-        System.out.print(W[c][r].toUpperCase() + " ");
+        if(W[c][r].length() == 1){
+          result[keyNum] += "0";
+        }
         result[keyNum] += W[c][r];
-        if(result[keyNum].length() > 32){
-          //System.out.println(result[keyNum]);
-          System.out.println();
+        if(result[keyNum].length() >= 32){
+          System.out.println(result[keyNum].toUpperCase());
           keyNum++;
+          if(keyNum < 11){
+            result[keyNum] = "";
+          }
         }
       }
     }
@@ -112,15 +116,15 @@ public class AESCipher {
 
   public static String aesSBox(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-      System.out.println("inHex: " + inHex);
-      System.out.println("coords: " + coords);
-      System.out.println("S_BOX[coords]: " + S_BOX[coords]);
+      //System.out.println("inHex: " + inHex);
+      //System.out.println("coords: " + coords);
+      //System.out.println("S_BOX[coords]: " + S_BOX[coords]);
     return Integer.toHexString(S_BOX[coords]);
   }
 
   public static String aesRcon(String round){
     int coords = Integer.parseInt(round, 16);
-    System.out.println("Rcon[coords]: " + Rcon[coords]);
+    //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(Rcon[coords]);
   }
 }
