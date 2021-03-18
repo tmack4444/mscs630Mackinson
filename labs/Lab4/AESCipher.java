@@ -51,7 +51,11 @@ public class AESCipher {
 
       // start with our base case, the first round of this we make the first 4 columns
         if(i < 4 && j < 4){
-          W[i][j] = Integer.parseInt(KeyHex.substring(iteration*2, iteration*2+1) );
+          W[i][j] = Integer.parseInt(KeyHex.substring(iteration*2, iteration*2+2) );
+          iteration++;
+          System.out.println(Integer.toHexString(W[i][j]));
+          //now, working through instruction cases
+          //if column index is not multiple of 4, XOR the 4th past and last col
         } else if(i % 4 != 0){
           W[i][j] = W[i-4][j] ^ W[i-1][j];
         } else if(i % 4 == 0){
@@ -78,17 +82,17 @@ public class AESCipher {
 
         }
       }
-      //now, working through instruction cases
-      //if column index is not multiple of 4, XOR the 4th past and last col
 
     }
     String[] result = new String[11];
     int keyNum = 0;
     for(int r = 0; r < 4; r++){
       for(int c = 0; c < 44; c++){
+        System.out.print(Integer.toHexString(W[c][r]) + " ");
         result[keyNum] += Integer.toHexString(W[c][r]);
         if(result[keyNum].length() > 32){
-          System.out.println(result[keyNum]);
+          //System.out.println(result[keyNum]);
+          System.out.println();
           keyNum++;
         }
       }
