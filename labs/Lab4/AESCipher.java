@@ -43,30 +43,27 @@ public class AESCipher {
 
   public static String[] roundKeysHex (String KeyHex){
     //System.out.println(KeyHex);
-    String[][] W = new String[44][4];
+    String[][] W = new String[4][44];
     int iteration = 0;
     //this loop will go through the columns
-    for(int i = 0; i < 44; i++){
-      //this loop will go through the rows
-      for(int j = 0; j < 4; j++){
-
+    for(int j = 0; j < 44; j++){
       // start with our base case, the first round of this we make the first 4 columns
-        if(i < 4 && j < 4){
-          W[i][j] = (KeyHex.substring(iteration, iteration + 2));
-          //System.out.println("i: " + i);
-          //System.out.println("j: " + j);
-          //System.out.println("W[i][j]: " + W[i][j]);
-          iteration += 2;
-          //System.out.println("iteration: " + iteration);
+        if(j < 4){
+          for(int i = 0; i < 4; i++){
+            W[i][j] = (KeyHex.substring(iteration, iteration + 2));
+            iteration += 2;
+          }
           //now, working through instruction cases
           //if column index is not multiple of 4, XOR the 4th past and last col
-        } else if(i % 4 != 0){
-          W[i][j] = Integer.toHexString((Integer.parseInt(W[i-4][j], 16) ^ (Integer.parseInt(W[i-1][j], 16)))) + "";
-        } else if(i % 4 == 0){
+        } else if(j % 4 != 0){
+          for(int i = 0; i < 4; i++){
+            W[i][j] = Integer.toHexString((Integer.parseInt(W[i][j-4], 16) ^ (Integer.parseInt(W[i][j-1], 16)))) + "";
+          }
+        } else if(j % 4 == 0){
           //for the construction of this col, use the previous cols elements
           String[] wNew = new String [4];
           for(int copy = 0; copy < 4; copy++){
-            wNew[copy] = W[i-1][copy];
+            wNew[copy] = W[j-1][copy];
           }
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
@@ -80,19 +77,19 @@ public class AESCipher {
             //System.out.println("wNew[l]: " + wNew[l]);
             wNew[l] = aesSBox(wNew[l] + "");
           }
-          //Get the Rcon(i) constant for ith round w/ table 2
-          String rConst = aesRcon(i + "");
-          //perform XOR using the round constant from prev step
           for(int p = 0; p < 4; p++){
+            //Get the Rcon(i) constant for p th round w/ table 2
+            String rConst = aesRcon(p + "");
+            //perform XOR using the round constant from prev step
             wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[i][j] = Integer.toHexString(Integer.parseInt(W[i-4][j], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
+            W[j][p] = Integer.toHexString(Integer.parseInt(W[j-4][p], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
           }
 
         }
-      }
-
     }
+
+    //Build our output string
     String[] result = new String[11];
     int keyNum = 0;
     result[0] = "";
