@@ -48,6 +48,7 @@ public class AESCipher {
     //this loop will go through the columns
     for(int j = 0; j < 44; j++){
       // start with our base case, the first round of this we make the first 4 columns
+      //System.out.println(j % 4);
         if(j < 4){
           for(int i = 0; i < 4; i++){
             W[i][j] = (KeyHex.substring(iteration, iteration + 2));
@@ -74,16 +75,18 @@ public class AESCipher {
           }
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
-            //System.out.println("wNew[l]: " + wNew[l]);
+            System.out.println("wNew[l]: " + wNew[l]);
             wNew[l] = aesSBox(wNew[l] + "");
+            System.out.println("wNew[l]: " + wNew[l]);
+            System.out.println();
           }
           for(int p = 0; p < 4; p++){
             //Get the Rcon(i) constant for p th round w/ table 2
-            String rConst = aesRcon(p + "");
+            String rConst = aesRcon(j + "");
             //perform XOR using the round constant from prev step
             wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[p][j] = Integer.toHexString(Integer.parseInt(W[p][j-1], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
+            W[p][j] = Integer.toHexString(Integer.parseInt(W[p][j-4], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
           }
 
         }
