@@ -46,21 +46,24 @@ public class AESCipher {
     int iteration = 0;
     //this loop will go through the columns
     for(int i = 0; i < 44; i++){
+      System.out.println("i: " + i);
+      System.out.println("i % 4: " + i % 4);
+      System.out.println();
+      System.out.println();
       //this loop will go through the rows
       for(int j = 0; j < 4; j++){
-        System.out.println("i: " + i);
-        System.out.println("i % 4: " + i % 4);
         System.out.println("j: " + j);
         System.out.println("j % 4: " + j % 4);
+        System.out.println();
 
       // start with our base case, the first round of this we make the first 4 columns
         if(i < 4 && j < 4){
           W[i][j] = Integer.parseInt(KeyHex.substring(iteration*2, iteration*2+1) );
         } else if(i % 4 != 0){
-          W[i][j] = W[i][j-4] ^ W[i][j-1];
+          W[j][i] = W[j][i-4] ^ W[j][i-1];
         } else if(i % 4 == 0){
           //for the construction of this col, use the previous cols elements
-          int[] wNew = W[i-1];
+          int[] wNew = W[j-1];
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
             int temp = wNew[k];
@@ -77,7 +80,9 @@ public class AESCipher {
           for(int p = 0; p < 4; p++){
             wNew[p] = rConst ^ wNew[p];
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[i][j] = W[i][j-3] ^ wNew[p];
+            System.out.println("i: " + i);
+            System.out.println("j: " + j);
+            W[j][i] = W[j][i-4] ^ wNew[p];
           }
 
         }
@@ -100,11 +105,13 @@ public class AESCipher {
   }
 
   public static int aesSBox(String inHex){
-    int coords = Integer.parseInt(inHex, 16);
+    System.out.println("inHex: " + inHex);
+    int coords = Integer.parseInt(inHex);
     return S_BOX[coords];
   }
 
   public static int aesRcon(String round){
+    System.out.println("round: " + round);
     int coords = Integer.parseInt(round, 16);
     return Rcon[coords];
   }
