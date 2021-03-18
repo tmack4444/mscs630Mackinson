@@ -42,7 +42,7 @@ public class AESCipher {
 
 
   public static String[] roundKeysHex (String KeyHex){
-    int[][] W = new int[4][44];
+    int[][] W = new int[44][4];
     int iteration = 0;
     //this loop will go through the columns
     for(int i = 0; i < 44; i++){
@@ -60,10 +60,10 @@ public class AESCipher {
         if(i < 4 && j < 4){
           W[i][j] = Integer.parseInt(KeyHex.substring(iteration*2, iteration*2+1) );
         } else if(i % 4 != 0){
-          W[j][i] = W[j][i-4] ^ W[j][i-1];
+          W[i][j] = W[i-4][j] ^ W[i-1][j];
         } else if(i % 4 == 0){
           //for the construction of this col, use the previous cols elements
-          int[] wNew = W[j-1];
+          int[] wNew = W[i-1];
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
             int temp = wNew[k];
@@ -82,7 +82,7 @@ public class AESCipher {
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
             System.out.println("i: " + i);
             System.out.println("j: " + j);
-            W[j][i] = W[j][i-4] ^ wNew[p];
+            W[i][j] = W[i-4][j] ^ wNew[p];
           }
 
         }
@@ -95,8 +95,8 @@ public class AESCipher {
     int keyNum = 0;
     for(int r = 0; r < 4; r++){
       for(int c = 0; c < 44; c++){
-        result[keyNum] += W[r][c] + "";
-        if(result[keyNum].length() > 16){
+        result[keyNum] += W[c][r] + "";
+        if(result[keyNum].length() > 32){
           keyNum++;
         }
       }
