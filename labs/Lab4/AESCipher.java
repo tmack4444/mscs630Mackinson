@@ -75,14 +75,17 @@ public class AESCipher {
           }
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
+            System.out.println("j: " + j);
+            System.out.println("l: " + l);
             System.out.println("wNew[l]: " + wNew[l]);
             wNew[l] = aesSBox(wNew[l] + "");
             System.out.println("wNew[l]: " + wNew[l]);
             System.out.println();
           }
+          String rConst = aesRcon((j/4) + "");
+          System.out.println("rConst: " + rConst);
           for(int p = 0; p < 4; p++){
-            //Get the Rcon(i) constant for p th round w/ table 2
-            String rConst = aesRcon(j + "");
+            //Get the Rcon(p) constant for p th round w/ table 2
             //perform XOR using the round constant from prev step
             wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
