@@ -65,7 +65,10 @@ public class AESCipher {
           W[i][j] = Integer.toHexString((Integer.parseInt(W[i-4][j], 16) ^ (Integer.parseInt(W[i-1][j], 16)))) + "";
         } else if(i % 4 == 0){
           //for the construction of this col, use the previous cols elements
-          String[] wNew = W[i-1];
+          String[] wNew = new String [4];
+          for(int copy = 0; copy < 4; copy++){
+            wNew[copy] = W[i-1][copy];
+          }
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
             String temp = wNew[k];
