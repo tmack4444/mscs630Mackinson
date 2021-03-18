@@ -48,6 +48,11 @@ public class AESCipher {
     for(int i = 0; i < 44; i++){
       //this loop will go through the rows
       for(int j = 0; j < 4; j++){
+        System.out.println("i: " + i);
+        System.out.println("i % 4: " + i % 4);
+        System.out.println("j: " + j);
+        System.out.println("j % 4: " + j % 4);
+
       // start with our base case, the first round of this we make the first 4 columns
         if(i < 4 && j < 4){
           W[i][j] = Integer.parseInt(KeyHex.substring(iteration*2, iteration*2+1) );
@@ -72,7 +77,7 @@ public class AESCipher {
           for(int p = 0; p < 4; p++){
             wNew[p] = rConst ^ wNew[p];
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[i][j] = W[i][j-4] ^ wNew[p];
+            W[i][j] = W[i][j-3] ^ wNew[p];
           }
 
         }
