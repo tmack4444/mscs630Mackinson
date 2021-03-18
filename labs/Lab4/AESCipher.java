@@ -43,7 +43,7 @@ public class AESCipher {
 
   public static String[] roundKeysHex (String KeyHex){
     System.out.println(KeyHex);
-    int[][] W = new int[44][4];
+    String[][] W = new String[44][4];
     int iteration = 0;
     //this loop will go through the columns
     for(int i = 0; i < 44; i++){
@@ -52,25 +52,26 @@ public class AESCipher {
 
       // start with our base case, the first round of this we make the first 4 columns
         if(i < 4 && j < 4){
-          W[i][j] = Integer.parseInt(KeyHex.substring(iteration, iteration + 2), 16);
+          W[i][j] = (KeyHex.substring(iteration, iteration + 2));
           System.out.println("Integer.parseInt(input, 16): " + Integer.parseInt( KeyHex.substring(iteration, iteration + 1), 16) );
           System.out.println("Integer.parseInt(input): " + Integer.parseInt((KeyHex.substring(iteration, iteration + 1) + ""))) ;
-          System.out.println("Integer.toHexString(W[i][j]: " + Integer.toHexString(W[i][j]));
+          System.out.println("Integer.toHexString(W[i][j]: " + W[i][j]);
           System.out.println("W[i][j]: " + W[i][j]);
           iteration += 2;
           System.out.println("iteration: " + iteration);
           //now, working through instruction cases
           //if column index is not multiple of 4, XOR the 4th past and last col
         } else if(i % 4 != 0){
-          W[i][j] = W[i-4][j] ^ W[i-1][j];
+          W[i][j] = Integer.toHexString((Integer.parseInt(W[i-4][j], 16) ^ (Integer.parseInt(W[i-1][j], 16)))) + "";
         } else if(i % 4 == 0){
           //for the construction of this col, use the previous cols elements
-          int[] wNew = W[i-1];
+          String[] wNew = W[i-1];
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
-            int temp = wNew[k];
+            String temp = wNew[k];
             wNew[k] = wNew[k+1];
             wNew[k+1] = temp;
+            System.out.println("wNew[k]: " + wNew[k]);
           }
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
@@ -78,12 +79,12 @@ public class AESCipher {
             wNew[l] = aesSBox(wNew[l] + "");
           }
           //Get the Rcon(i) constant for ith round w/ table 2
-          int rConst = aesRcon(i + "");
+          String rConst = aesRcon(i + "");
           //perform XOR using the round constant from prev step
           for(int p = 0; p < 4; p++){
-            wNew[p] = rConst ^ wNew[p];
+            wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
-            W[i][j] = W[i-4][j] ^ wNew[p];
+            W[i][j] = Integer.toHexString(Integer.parseInt(W[i-4][j], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
           }
 
         }
@@ -94,8 +95,8 @@ public class AESCipher {
     int keyNum = 0;
     for(int c = 0; c < 44; c++){
       for(int r = 0; r < 4; r++){
-        System.out.print(Integer.toHexString(W[c][r]) + " ");
-        result[keyNum] += Integer.toHexString(W[c][r]);
+        System.out.print(W[c][r].toUpperCase() + " ");
+        result[keyNum] += W[c][r];
         if(result[keyNum].length() > 32){
           //System.out.println(result[keyNum]);
           System.out.println();
@@ -106,13 +107,17 @@ public class AESCipher {
     return result;
   }
 
-  public static int aesSBox(String inHex){
-    int coords = Integer.parseInt(inHex);
-    return S_BOX[coords];
+  public static String aesSBox(String inHex){
+    int coords = Integer.parseInt(inHex, 16);
+      System.out.println("inHex: " + inHex);
+      System.out.println("coords: " + coords);
+      System.out.println("S_BOX[coords]: " + S_BOX[coords]);
+    return Integer.toHexString(S_BOX[coords]);
   }
 
-  public static int aesRcon(String round){
-    int coords = Integer.parseInt(round);
-    return Rcon[coords];
+  public static String aesRcon(String round){
+    int coords = Integer.parseInt(round, 16);
+    System.out.println("Rcon[coords]: " + Rcon[coords]);
+    return Integer.toHexString(Rcon[coords]);
   }
 }
