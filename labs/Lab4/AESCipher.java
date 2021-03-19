@@ -93,6 +93,10 @@ public class AESCipher {
           }
 
         }
+        System.out.println("W[0][j]: " + W[0][j]);
+        System.out.println("W[1][j]: " + W[1][j]);
+        System.out.println("W[2][j]: " + W[2][j]);
+        System.out.println("W[3][j]: " + W[3][j]);
     }
 
     //Build our output string
