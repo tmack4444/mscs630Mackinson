@@ -66,13 +66,14 @@ public class AESCipher {
           for(int copy = 0; copy < 4; copy++){
             wNew[copy] = W[copy][j-1];
           }
+
           //then shift all vals to the left
           for(int k = 0; k < 3; k++){
             String temp = wNew[k];
             wNew[k] = wNew[k+1];
             wNew[k+1] = temp;
-            //System.out.println("wNew[k]: " + wNew[k]);
           }
+            //System.out.println("wNew[k]: " + wNew[k]);
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
             System.out.println("j: " + j);
@@ -84,10 +85,12 @@ public class AESCipher {
           }
           String rConst = aesRcon((j/4) + "");
           System.out.println("rConst: " + rConst);
+          System.out.println("wNew[0] before XOR: " + wNew[0]);
+          wNew[0] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[0], 16) ) + "";
+          System.out.println("rConst XOR wNew[0]: " + wNew[0]);
           for(int p = 0; p < 4; p++){
             //Get the Rcon(p) constant for p th round w/ table 2
             //perform XOR using the round constant from prev step
-            wNew[p] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
             //Finally, define w[j] as w(j) = w(j-4) XOR wNew
             W[p][j] = Integer.toHexString(Integer.parseInt(W[p][j-4], 16) ^ Integer.parseInt(wNew[p], 16) ) + "";
           }
@@ -97,7 +100,7 @@ public class AESCipher {
         System.out.println("W[1][j]: " + W[1][j]);
         System.out.println("W[2][j]: " + W[2][j]);
         System.out.println("W[3][j]: " + W[3][j]);
-    }
+      }
 
     //Build our output string
     String[] result = new String[11];
