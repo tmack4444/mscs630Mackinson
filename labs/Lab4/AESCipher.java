@@ -76,18 +76,10 @@ public class AESCipher {
             //System.out.println("wNew[k]: " + wNew[k]);
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
-            System.out.println("j: " + j);
-            System.out.println("l: " + l);
-            System.out.println("wNew[l]: " + wNew[l]);
             wNew[l] = aesSBox(wNew[l] + "");
-            System.out.println("wNew[l]: " + wNew[l]);
-            System.out.println();
           }
           String rConst = aesRcon((j/4) + "");
-          System.out.println("rConst: " + rConst);
-          System.out.println("wNew[0] before XOR: " + wNew[0]);
           wNew[0] = Integer.toHexString(Integer.parseInt(rConst, 16) ^ Integer.parseInt(wNew[0], 16) ) + "";
-          System.out.println("rConst XOR wNew[0]: " + wNew[0]);
           for(int p = 0; p < 4; p++){
             //Get the Rcon(p) constant for p th round w/ table 2
             //perform XOR using the round constant from prev step
@@ -96,10 +88,6 @@ public class AESCipher {
           }
 
         }
-        System.out.println("W[0][j]: " + W[0][j]);
-        System.out.println("W[1][j]: " + W[1][j]);
-        System.out.println("W[2][j]: " + W[2][j]);
-        System.out.println("W[3][j]: " + W[3][j]);
       }
 
     //Build our output string
@@ -113,7 +101,6 @@ public class AESCipher {
         }
         result[keyNum] += W[r][c];
         if(result[keyNum].length() >= 32){
-          System.out.println(result[keyNum].toUpperCase());
           keyNum++;
           if(keyNum < 11){
             result[keyNum] = "";
@@ -133,7 +120,7 @@ public class AESCipher {
   }
 
   public static String aesRcon(String round){
-    int coords = Integer.parseInt(round, 16);
+    int coords = Integer.parseInt(round);
     //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(Rcon[coords]);
   }

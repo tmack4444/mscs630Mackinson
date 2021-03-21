@@ -7,7 +7,12 @@ public class Driver_lab4 {
    String input = in.nextLine();
    AESCipher keygen = new AESCipher();
    String[] Keys = keygen.roundKeysHex(input);
-
+   String output = "";
+   for(int i = 0; i < 11; i++){
+     output += Keys[i].toUpperCase() + "\n";
+   }
+   output = output.trim();
+   System.out.println(output);
  }
 
 }
