@@ -124,4 +124,55 @@ public class AESCipher {
     //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(Rcon[coords]);
   }
+
+  public static String[][] AESStateXOR(String[][] sHex, String[][] keyHex){
+    String[][] result = new String [4][4];
+    for(int i = 0; i < 4; i++ ){
+      for(int j = 0; j < 4; j++ ){
+        result[i][j] = (Integer.parseInt(sHex[i][j], 16) ^ Integer.parseInt(keyHex[i][j], 16)) + "";
+      }
+    }
+    return result;
+  }
+
+  public static String[][] AESNibbleSub(String[][] inStateHex){
+    String[][] result = new String [4][4];
+    for(int i = 0; i < 4; i++ ){
+      for(int j = 0; j < 4; j++ ){
+        result[i][j] = aesSBox(inStateHex[i][j]);
+      }
+    }
+        return result;
+
+  }
+
+  public static String[][] AESShiftRow(String[][] inStateHex){
+    String[][] result = new String [4][4];
+    String temp = "";
+    //Will do research based on the resources you provided, but for now here's a hardcoded solution
+    result[0] = inStateHex[0];
+    for(int k = 0; k < 3; k++){
+      temp = inStateHex[1][k];
+      inStateHex[1][k] = inStateHex[1][k+1];
+      inStateHex[k+1] = temp;
+    }
+    result[1] = inStateHex[1];
+
+    for(int j = 0; j < 2; j++){
+      temp = inStateHex[2][j];
+      inStateHex[2][j] = inStateHex[2][j+2];
+      inStateHex[2][j+2] = temp;
+    }
+
+    for(int l = 0; l < 3; l++){
+      temp = inStateHex[3][l];
+      inStateHex[3][l] = inStateHex[3][4];
+      inStateHex[3][4] = temp;
+    }
+
+    return result;
+
+  }
+
+
 }
