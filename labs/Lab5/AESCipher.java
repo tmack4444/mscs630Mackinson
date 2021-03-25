@@ -163,12 +163,14 @@ public class AESCipher {
       inStateHex[2][j] = inStateHex[2][j+2];
       inStateHex[2][j+2] = temp;
     }
+    result[2] = inStateHex[2];
 
     for(int l = 0; l < 3; l++){
       temp = inStateHex[3][l];
       inStateHex[3][l] = inStateHex[3][4];
       inStateHex[3][4] = temp;
     }
+    result[3] = inStateHex[3];
 
     return result;
 
