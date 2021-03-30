@@ -176,5 +176,17 @@ public class AESCipher {
 
   }
 
+  public static String[][] AESMixColumn(String[][] inStateHex){
+    String[][] result = new String [4][4];
+    for(int r = 0; r < 4; r++){
+      String[4] colR = instateHex[r];
+      for(int i = 0; i < 4; i++){
+        String currRow = colR[i];
+        
+      }
+      result = colR;
+    }
+  }
+
 
 }
