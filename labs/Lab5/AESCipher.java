@@ -89,7 +89,6 @@ public class AESCipher {
 
         }
       }
-
     //Build our output string
     String[] result = new String[11];
     int keyNum = 0;
@@ -109,6 +108,31 @@ public class AESCipher {
       }
     }
     return result;
+  }
+
+  public static String AESSeq(String[] key){
+    String[][] result = convertString(key[0]);
+    for(int i = 0; i < key.length; i++){
+      result = AESNibbleSub(result);
+      result = AESShiftRow(result);
+      result = AESMixColumn(result);
+      if(i+1 < key.length){
+        result[i+1] += convertString(key[i+1]);
+      }
+    }
+    result = AESNibbleSub(result);
+    result = AESShiftRow(result);
+    result += convertString(key[i]);
+  }
+
+  public static String[][] convertString(String key){
+    String result[][] = new String[4][4];
+    int incrementor = 0;
+    for(int i = 0; i < 4; i++){
+      for(int j = 0; j < 4; j++){
+        result[i][j] = key.charAt(incrementor) + "";
+      }
+    }
   }
 
   public static String aesSBox(String inHex){
@@ -178,15 +202,36 @@ public class AESCipher {
 
   public static String[][] AESMixColumn(String[][] inStateHex){
     String[][] result = new String [4][4];
+    String[][] multMatrix = {{"02", "03", "01", "01"},
+                            {"01", "02", "03", "01"},
+                            {"01", "01", "02", "03"},
+                            {"03", "01", "01", "02"}};
+    String leftMostBitXOR = "00011011";
     for(int r = 0; r < 4; r++){
-      String[4] colR = instateHex[r];
+      String[] colR = instateHex[r];
       for(int i = 0; i < 4; i++){
         String currRow = colR[i];
-        
+        String multVal = multMatrix[r][i];
+        String leftMostCheck = Integer.toBinaryString(Integer.parseInt(currRow));
+        currRow = leftShift(currRow);
+        if(leftMostCheck.charAt(leftMostCheck.length()) == '1'){
+          colR[i] = currRow ^ Integer.parseInt();
+        }
+
+
       }
       result = colR;
     }
+    return result;
   }
 
+  public static String leftShift(String hexString){
+    String result = "";
+    for(int i = 0; i < hexString.length()-1; i++){
+      result = hexString.charAt(i) + "";
+    }
+    result += "0";
+    return result;
+  }
 
 }
