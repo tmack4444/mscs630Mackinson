@@ -40,6 +40,32 @@ public class AESCipher {
 
 
 
+   public static String AESSeq(String key, String plaintext){
+     String[] keys = roundKeysHex(key);
+     String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
+     for(int i = 0; i < keys.length; i++){
+       result = AESNibbleSub(result);
+       result = AESShiftRow(result);
+       result = AESMixColumn(result);
+       result = AESStateXOR(result, stringToMatrix(keys[i]));
+     }
+     //steps for the last round
+     result = AESNibbleSub(result);
+     result = AESShiftRow(result);
+     result = AESStateXOR(stringToMatrix(keys[keys.length]), result);
+   }
+
+   //Helper function to convert a 16 length string into a 4x4 matrix of
+   public static String[][] stringToMatrix(String orig){
+     int iterator = 0;
+     String[][] result = new String[4][4];
+     for(int i = 0; i < 4; i++){
+       for(int j = 0; j < 4; j++){
+         result[i][j] = orig.substring(iterator, iterator + 1 * 2);
+         iterator += 2;
+       }
+     }
+   }
 
   public static String[] roundKeysHex (String KeyHex){
     //System.out.println(KeyHex);
@@ -110,30 +136,6 @@ public class AESCipher {
     return result;
   }
 
-  public static String AESSeq(String[] key){
-    String[][] result = convertString(key[0]);
-    for(int i = 0; i < key.length; i++){
-      result = AESNibbleSub(result);
-      result = AESShiftRow(result);
-      result = AESMixColumn(result);
-      if(i+1 < key.length){
-        result[i+1] += convertString(key[i+1]);
-      }
-    }
-    result = AESNibbleSub(result);
-    result = AESShiftRow(result);
-    result += convertString(key[i]);
-  }
-
-  public static String[][] convertString(String key){
-    String result[][] = new String[4][4];
-    int incrementor = 0;
-    for(int i = 0; i < 4; i++){
-      for(int j = 0; j < 4; j++){
-        result[i][j] = key.charAt(incrementor) + "";
-      }
-    }
-  }
 
   public static String aesSBox(String inHex){
     int coords = Integer.parseInt(inHex, 16);
