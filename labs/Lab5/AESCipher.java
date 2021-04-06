@@ -40,7 +40,7 @@ public class AESCipher {
 
 
 
-   public static String AESSeq(String key, String plaintext){
+   public static String[][] AESSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
      for(int i = 0; i < keys.length; i++){
@@ -53,18 +53,20 @@ public class AESCipher {
      result = AESNibbleSub(result);
      result = AESShiftRow(result);
      result = AESStateXOR(stringToMatrix(keys[keys.length]), result);
+     return result;
    }
 
    //Helper function to convert a 16 length string into a 4x4 matrix of
    public static String[][] stringToMatrix(String orig){
-     int iterator = 0;
+     int iteration = 0;
      String[][] result = new String[4][4];
      for(int i = 0; i < 4; i++){
        for(int j = 0; j < 4; j++){
-         result[i][j] = orig.substring(iterator, iterator + 1 * 2);
-         iterator += 2;
+         result[i][j] = orig.substring(iteration, iteration + 2);
+         iteration += 2;
        }
      }
+     return result;
    }
 
   public static String[] roundKeysHex (String KeyHex){
@@ -180,7 +182,7 @@ public class AESCipher {
     for(int k = 0; k < 3; k++){
       temp = inStateHex[1][k];
       inStateHex[1][k] = inStateHex[1][k+1];
-      inStateHex[k+1] = temp;
+      inStateHex[1][k+1] = temp;
     }
     result[1] = inStateHex[1];
 
@@ -210,19 +212,17 @@ public class AESCipher {
                             {"03", "01", "01", "02"}};
     String leftMostBitXOR = "00011011";
     for(int r = 0; r < 4; r++){
-      String[] colR = instateHex[r];
+      String[] colR = inStateHex[r];
       for(int i = 0; i < 4; i++){
         String currRow = colR[i];
         String multVal = multMatrix[r][i];
         String leftMostCheck = Integer.toBinaryString(Integer.parseInt(currRow));
         currRow = leftShift(currRow);
         if(leftMostCheck.charAt(leftMostCheck.length()) == '1'){
-          colR[i] = currRow ^ Integer.parseInt();
+          colR[i] = (Integer.parseInt(currRow, 16) ^ Integer.parseInt(leftMostBitXOR, 2)) + "";
         }
-
-
       }
-      result = colR;
+      result[r] = colR;
     }
     return result;
   }
