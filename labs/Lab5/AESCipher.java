@@ -187,27 +187,28 @@ public class AESCipher {
     String[][] result = new String [4][4];
     String temp = "";
     //Will do research based on the resources you provided, but for now here's a hardcoded solution
-    result[0] = inStateHex[0];
-    for(int k = 0; k < 3; k++){
-      temp = inStateHex[1][k];
-      inStateHex[1][k] = inStateHex[1][k+1];
-      inStateHex[1][k+1] = temp;
-    }
-    result[1] = inStateHex[1];
 
-    for(int j = 0; j < 2; j++){
-      temp = inStateHex[2][j];
-      inStateHex[2][j] = inStateHex[2][j+2];
-      inStateHex[2][j+2] = temp;
+    for(int k = 0; k < 3; k++){
+      temp = inStateHex[k][1];
+      inStateHex[k][1] = inStateHex[k+1][1];
+      inStateHex[k+1][1] = temp;
     }
-    result[2] = inStateHex[2];
+    for(int j = 0; j < 2; j++){
+      temp = inStateHex[j][2];
+      inStateHex[j][2] = inStateHex[j+2][2];
+      inStateHex[j+2][2] = temp;
+    }
 
     for(int l = 0; l < 3; l++){
-      temp = inStateHex[3][l];
-      inStateHex[3][l] = inStateHex[3][3];
+      temp = inStateHex[l][3];
+      inStateHex[l][3] = inStateHex[3][3];
       inStateHex[3][3] = temp;
     }
-    result[3] = inStateHex[3];
+    for(int c = 0; c < 4; c++){
+      for(int r = 0; r < 4; r++){
+        result[r][c] = inStateHex[r][c];
+      }
+    }
     return result;
 
   }
@@ -245,8 +246,8 @@ public class AESCipher {
   }
 
   public static void helperOut(String[][] printMe){
-    for(int r = 0; r < 4; r++){
-      for(int c  = 0; c < 4; c++){
+    for(int c = 0; c < 4; c++){
+      for(int r  = 0; r < 4; r++){
         if(printMe[r][c].length() == 1){
           printMe[r][c] = "0" + printMe[r][c];
         }
