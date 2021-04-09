@@ -43,21 +43,24 @@ public class AESCipher {
    public static String[][] AESSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
-     for(int r = 0; r < 4; r++){
-       for(int c = 0; c < 4; c++){
-         System.out.println(result[r][c]);
-       }
-     }
+     helperOut(result);
      for(int i = 0; i < keys.length-1; i++){
        result = AESNibbleSub(result);
+       helperOut(result);
        result = AESShiftRow(result);
+       helperOut(result);
        result = AESMixColumn(result);
+       helperOut(result);
        result = AESStateXOR(result, stringToMatrix(keys[i]));
+       helperOut(result);
      }
      //steps for the last round
      result = AESNibbleSub(result);
+     helperOut(result);
      result = AESShiftRow(result);
+     helperOut(result);
      result = AESStateXOR(stringToMatrix(keys[keys.length-1]), result);
+     helperOut(result);
      return result;
    }
 
@@ -146,9 +149,9 @@ public class AESCipher {
 
   public static String aesSBox(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-      System.out.println("inHex: " + inHex);
-      System.out.println("coords: " + coords);
-      System.out.println("S_BOX[coords]: " + S_BOX[coords]);
+      //System.out.println("inHex: " + inHex);
+      //System.out.println("coords: " + coords);
+      //System.out.println("S_BOX[coords]: " + S_BOX[coords]);
     return Integer.toHexString(S_BOX[coords]);
   }
 
@@ -173,11 +176,11 @@ public class AESCipher {
     String[][] result = new String [4][4];
     for(int i = 0; i < 4; i++ ){
       for(int j = 0; j < 4; j++ ){
-        System.out.println(inStateHex[i][j]);
+        //System.out.println(inStateHex[i][j]);
         result[i][j] = aesSBox(inStateHex[i][j]);
       }
     }
-        return result;
+    return result;
   }
 
   public static String[][] AESShiftRow(String[][] inStateHex){
@@ -205,7 +208,6 @@ public class AESCipher {
       inStateHex[3][3] = temp;
     }
     result[3] = inStateHex[3];
-
     return result;
 
   }
@@ -240,6 +242,19 @@ public class AESCipher {
     }
     result += "0";
     return result;
+  }
+
+  public static void helperOut(String[][] printMe){
+    for(int r = 0; r < 4; r++){
+      for(int c  = 0; c < 4; c++){
+        if(printMe[r][c].length() == 1){
+          printMe[r][c] = "0" + printMe[r][c];
+        }
+        System.out.print(printMe[r][c]);
+      }
+      System.out.println();
+    }
+    System.out.println();
   }
 
 }
