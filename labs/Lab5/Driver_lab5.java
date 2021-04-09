@@ -13,8 +13,11 @@ public class Driver_lab5 {
    String output = "";
    for(int i = 0; i < 4; i++){
      for(int j = 0; j < 4; j++){
-       output += Keys[i][j].toUpperCase() + "\n";
+       if(Keys[i][j].length() == 1)
+       output += "0";
+       output += Keys[i][j].toUpperCase();
      }
+     output += "\n";
    }
    output = output.trim();
    System.out.println(output);
