@@ -43,7 +43,12 @@ public class AESCipher {
    public static String[][] AESSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
-     for(int i = 0; i < keys.length; i++){
+     for(int r = 0; r < 4; r++){
+       for(int c = 0; c < 4; c++){
+         System.out.println(result[r][c]);
+       }
+     }
+     for(int i = 0; i < keys.length-1; i++){
        result = AESNibbleSub(result);
        result = AESShiftRow(result);
        result = AESMixColumn(result);
@@ -52,7 +57,7 @@ public class AESCipher {
      //steps for the last round
      result = AESNibbleSub(result);
      result = AESShiftRow(result);
-     result = AESStateXOR(stringToMatrix(keys[keys.length]), result);
+     result = AESStateXOR(stringToMatrix(keys[keys.length-1]), result);
      return result;
    }
 
@@ -141,9 +146,9 @@ public class AESCipher {
 
   public static String aesSBox(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-      //System.out.println("inHex: " + inHex);
-      //System.out.println("coords: " + coords);
-      //System.out.println("S_BOX[coords]: " + S_BOX[coords]);
+      System.out.println("inHex: " + inHex);
+      System.out.println("coords: " + coords);
+      System.out.println("S_BOX[coords]: " + S_BOX[coords]);
     return Integer.toHexString(S_BOX[coords]);
   }
 
@@ -157,7 +162,8 @@ public class AESCipher {
     String[][] result = new String [4][4];
     for(int i = 0; i < 4; i++ ){
       for(int j = 0; j < 4; j++ ){
-        result[i][j] = (Integer.parseInt(sHex[i][j], 16) ^ Integer.parseInt(keyHex[i][j], 16)) + "";
+        int tempRes = 0;
+        result[i][j] = Integer.toHexString((Integer.parseInt(sHex[i][j], 16) ^ Integer.parseInt(keyHex[i][j], 16)));
       }
     }
     return result;
@@ -167,11 +173,11 @@ public class AESCipher {
     String[][] result = new String [4][4];
     for(int i = 0; i < 4; i++ ){
       for(int j = 0; j < 4; j++ ){
+        System.out.println(inStateHex[i][j]);
         result[i][j] = aesSBox(inStateHex[i][j]);
       }
     }
         return result;
-
   }
 
   public static String[][] AESShiftRow(String[][] inStateHex){
@@ -195,8 +201,8 @@ public class AESCipher {
 
     for(int l = 0; l < 3; l++){
       temp = inStateHex[3][l];
-      inStateHex[3][l] = inStateHex[3][4];
-      inStateHex[3][4] = temp;
+      inStateHex[3][l] = inStateHex[3][3];
+      inStateHex[3][3] = temp;
     }
     result[3] = inStateHex[3];
 
@@ -216,10 +222,10 @@ public class AESCipher {
       for(int i = 0; i < 4; i++){
         String currRow = colR[i];
         String multVal = multMatrix[r][i];
-        String leftMostCheck = Integer.toBinaryString(Integer.parseInt(currRow));
+        String leftMostCheck = Integer.toBinaryString(Integer.parseInt(currRow, 16));
         currRow = leftShift(currRow);
-        if(leftMostCheck.charAt(leftMostCheck.length()) == '1'){
-          colR[i] = (Integer.parseInt(currRow, 16) ^ Integer.parseInt(leftMostBitXOR, 2)) + "";
+        if(leftMostCheck.charAt(leftMostCheck.length()-1) == '1'){
+          colR[i] = Integer.toHexString((Integer.parseInt(currRow, 16) ^ Integer.parseInt(leftMostBitXOR, 2)));
         }
       }
       result[r] = colR;
