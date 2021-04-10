@@ -17,10 +17,9 @@ public class Driver_lab5 {
        output += "0";
        output += Keys[i][j].toUpperCase();
      }
-     output += "\n";
    }
    output = output.trim();
-   System.out.println(output);
+   System.out.print("Resulting Key: " + output);
  }
 
 }

@@ -269,25 +269,26 @@ public class AESCipher {
    int colTotal = 0;
 
    for(int c = 0; c < 4; c++){
-     //first, get the SBox value for each element in the row.
-     for(int r = 0; r < 4; r++){
-       currentRow[r] = aesSBox(inStateHex[c][r]);
-     //then, we multiply each element of currentRow by the corresponding element in multMatrix
-     }
      for(int i = 0; i < 4; i++){
        for(int m = 0; m < 4; m++){
+         //System.out.print(multMatrix[i][m]);
          String multVal = multMatrix[i][m];
+         System.out.print(inStateHex[c][m]);
          if(multVal == "02"){
-           multVal = galoisTwoLookup(currentRow[m]);
+           multVal = galoisTwoLookup(inStateHex[c][m]);
+           colTotal ^= Integer.parseInt(multVal,16);
          } else if (multVal == "03") {
-           multVal = galoisThreeLookup(currentRow[m]);
+           multVal = galoisThreeLookup(inStateHex[c][m]);
+           colTotal ^= Integer.parseInt(multVal,16);
+         } else {
+           colTotal ^= Integer.parseInt(inStateHex[c][m],16);
          }
-         System.out.println("multVal: " + multVal);
-         System.out.println("currentRow[m]: " + currentRow[m]);
-         colTotal ^= (Integer.parseInt(currentRow[m],16) ^ Integer.parseInt(multVal, 16));
+         //System.out.println("multVal: " + multVal);
+         //System.out.println("currentRow[m]: " + currentRow[m]);
        }
-       result[c][i] = Integer.toHexString(colTotal ^ 4);
-       System.out.println(result[c][i]);
+        System.out.println();
+       result[i][c] = Integer.toHexString(colTotal);
+       //System.out.println(result[i][c]);
      }
 
    }
