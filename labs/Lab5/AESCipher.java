@@ -266,28 +266,27 @@ public class AESCipher {
                              {"01", "02", "03", "01"},
                              {"01", "01", "02", "03"},
                              {"03", "01", "01", "02"}};
-   int colTotal = 0;
 
    for(int c = 0; c < 4; c++){
      for(int i = 0; i < 4; i++){
+     int colTotal = 0;
        for(int m = 0; m < 4; m++){
          //System.out.print(multMatrix[i][m]);
          String multVal = multMatrix[i][m];
-         System.out.print(inStateHex[c][m]);
          if(multVal == "02"){
            multVal = galoisTwoLookup(inStateHex[c][m]);
-           colTotal ^= Integer.parseInt(multVal,16);
+           colTotal = colTotal ^ Integer.parseInt(multVal,16);
          } else if (multVal == "03") {
            multVal = galoisThreeLookup(inStateHex[c][m]);
-           colTotal ^= Integer.parseInt(multVal,16);
+           colTotal = colTotal ^ Integer.parseInt(multVal,16);
          } else {
-           colTotal ^= Integer.parseInt(inStateHex[c][m],16);
+           colTotal = colTotal ^ Integer.parseInt(inStateHex[c][m],16);
          }
          //System.out.println("multVal: " + multVal);
          //System.out.println("currentRow[m]: " + currentRow[m]);
        }
         System.out.println();
-       result[i][c] = Integer.toHexString(colTotal);
+       result[c][i] = Integer.toHexString(colTotal);
        //System.out.println(result[i][c]);
      }
 
