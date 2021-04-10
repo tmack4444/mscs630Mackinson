@@ -78,22 +78,25 @@ public class AESCipher {
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
      helperOut(result);
-     for(int i = 0; i < keys.length-1; i++){
+     for(int i = 1; i < keys.length-1; i++){
        result = AESNibbleSub(result);
-       helperOut(result);
+       //helperOut(result);
        result = AESShiftRow(result);
-       helperOut(result);
+       //helperOut(result);
        result = AESMixColumn(result);
-       helperOut(result);
+       //helperOut(result);
        result = AESStateXOR(result, stringToMatrix(keys[i]));
-       helperOut(result);
+       System.out.println("i: " + i);
+       //helperOut(result);
      }
+     System.out.println("keys.length-1: " + (keys.length-1) );
      //steps for the last round
+     System.out.println("LAST ROUND");
      result = AESNibbleSub(result);
      helperOut(result);
      result = AESShiftRow(result);
      helperOut(result);
-     result = AESStateXOR(stringToMatrix(keys[keys.length-1]), result);
+     result = AESStateXOR(result, stringToMatrix(keys[keys.length-1]));
      helperOut(result);
      return result;
    }
@@ -271,7 +274,6 @@ public class AESCipher {
      for(int i = 0; i < 4; i++){
      int colTotal = 0;
        for(int m = 0; m < 4; m++){
-         //System.out.print(multMatrix[i][m]);
          String multVal = multMatrix[i][m];
          if(multVal == "02"){
            multVal = galoisTwoLookup(inStateHex[c][m]);
@@ -282,12 +284,8 @@ public class AESCipher {
          } else {
            colTotal = colTotal ^ Integer.parseInt(inStateHex[c][m],16);
          }
-         //System.out.println("multVal: " + multVal);
-         //System.out.println("currentRow[m]: " + currentRow[m]);
        }
-        System.out.println();
        result[c][i] = Integer.toHexString(colTotal);
-       //System.out.println(result[i][c]);
      }
 
    }
