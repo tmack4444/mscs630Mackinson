@@ -77,27 +77,16 @@ public class AESCipher {
    public static String[][] AESSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
-     helperOut(result);
      for(int i = 1; i < keys.length-1; i++){
        result = AESNibbleSub(result);
-       //helperOut(result);
        result = AESShiftRow(result);
-       //helperOut(result);
        result = AESMixColumn(result);
-       //helperOut(result);
        result = AESStateXOR(result, stringToMatrix(keys[i]));
-       System.out.println("i: " + i);
-       //helperOut(result);
      }
-     System.out.println("keys.length-1: " + (keys.length-1) );
      //steps for the last round
-     System.out.println("LAST ROUND");
      result = AESNibbleSub(result);
-     helperOut(result);
      result = AESShiftRow(result);
-     helperOut(result);
      result = AESStateXOR(result, stringToMatrix(keys[keys.length-1]));
-     helperOut(result);
      return result;
    }
 
@@ -115,13 +104,11 @@ public class AESCipher {
    }
 
   public static String[] roundKeysHex (String KeyHex){
-    //System.out.println(KeyHex);
     String[][] W = new String[4][44];
     int iteration = 0;
     //this loop will go through the columns
     for(int j = 0; j < 44; j++){
       // start with our base case, the first round of this we make the first 4 columns
-      //System.out.println(j % 4);
         if(j < 4){
           for(int i = 0; i < 4; i++){
             W[i][j] = (KeyHex.substring(iteration, iteration + 2));
@@ -146,7 +133,6 @@ public class AESCipher {
             wNew[k] = wNew[k+1];
             wNew[k+1] = temp;
           }
-            //System.out.println("wNew[k]: " + wNew[k]);
           //Then transform each byte using an SBox junction
           for(int l = 0; l < 4; l++){
             wNew[l] = aesSBox(wNew[l] + "");
@@ -186,27 +172,21 @@ public class AESCipher {
 
   public static String aesSBox(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-      //System.out.println("inHex: " + inHex);
-      //System.out.println("coords: " + coords);
-      //System.out.println("S_BOX[coords]: " + S_BOX[coords]);
     return Integer.toHexString(S_BOX[coords]);
   }
 
   public static String aesRcon(String round){
     int coords = Integer.parseInt(round);
-    //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(Rcon[coords]);
   }
 
   public static String galoisTwoLookup(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-    //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(MULT_TWO[coords]);
   }
 
   public static String galoisThreeLookup(String inHex){
     int coords = Integer.parseInt(inHex, 16);
-    //System.out.println("Rcon[coords]: " + Rcon[coords]);
     return Integer.toHexString(MULT_THREE[coords]);
   }
 
@@ -225,7 +205,6 @@ public class AESCipher {
     String[][] result = new String [4][4];
     for(int i = 0; i < 4; i++ ){
       for(int j = 0; j < 4; j++ ){
-        //System.out.println(inStateHex[i][j]);
         result[i][j] = aesSBox(inStateHex[i][j]);
       }
     }
@@ -299,19 +278,6 @@ public class AESCipher {
     }
     result += "0";
     return result;
-  }
-
-  public static void helperOut(String[][] printMe){
-    for(int c = 0; c < printMe.length; c++){
-      for(int r  = 0; r < printMe[c].length; r++){
-        if(printMe[r][c].length() == 1){
-          printMe[r][c] = "0" + printMe[r][c];
-        }
-        System.out.print(printMe[r][c]);
-      }
-      System.out.println();
-    }
-    System.out.println();
   }
 
 }

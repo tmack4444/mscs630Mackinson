@@ -6,8 +6,6 @@ public class Driver_lab5 {
    Scanner in = new Scanner(System.in);
    String input = in.nextLine();
    String plaintext = in.nextLine();
-   System.out.println("input: " + input);
-   System.out.println("plaintext: " + plaintext);
    AESCipher keygen = new AESCipher();
    String[][] Keys = keygen.AESSeq(input, plaintext);
    String output = "";
@@ -19,7 +17,7 @@ public class Driver_lab5 {
      }
    }
    output = output.trim();
-   System.out.print("Resulting Key: " + output);
+   System.out.print(output);
  }
 
 }
