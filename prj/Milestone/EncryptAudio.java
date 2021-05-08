@@ -55,7 +55,7 @@ public class EncryptAudio {
       }
       BufferedWriter outputWriter = new BufferedWriter(new FileWriter("ciphertext.txt"));
       for(int i = 0; i < Keys.length; i++){
-        for(int r = 1; r < Keys[i].length; r++){
+        for(int r = 0; r < Keys[i].length; r++){
           for(int c = 0; c < Keys[i][r].length; c++){
             if(Keys[i][r][c].length() == 1){
               outputWriter.write("0");
