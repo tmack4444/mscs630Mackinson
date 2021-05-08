@@ -19,7 +19,7 @@ public class AESDeCipher {
    0xC6, 0x97, 0x35, 0x6A, 0xD4, 0xB3, 0x7D, 0xFA, 0xEF, 0xC5, 0x91, 0x39, 0x72, 0xE4, 0xD3, 0xBD,
    0x61, 0xC2, 0x9F, 0x25, 0x4A, 0x94, 0x33, 0x66, 0xCC, 0x83, 0x1D, 0x3A, 0x74, 0xE8, 0xCB, 0x8D};
 
-  private static final int[] S_BOX =
+  private static final int[] S_BOX =  //reverse SBOX
  {0x52,	0x09,	0x6a,	0xd5,	0x30,	0x36,	0xa5,	0x38,	0xbf,	0x40,	0xa3,	0x9e,	0x81,	0xf3,	0xd7,	0xfb,
   0x7c,	0xe3,	0x39,	0x82,	0x9b,	0x2f,	0xff,	0x87,	0x34,	0x8e,	0x43,	0x44,	0xc4,	0xde,	0xe9,	0xcb,
   0x54,	0x7b,	0x94,	0x32,	0xa6,	0xc2,	0x23,	0x3d,	0xee,	0x4c,	0x95,	0x0b,	0x42,	0xfa,	0xc3,	0x4e,
@@ -74,19 +74,27 @@ public class AESDeCipher {
         0x0b,0x08,0x0d,0x0e,0x07,0x04,0x01,0x02,0x13,0x10,0x15,0x16,0x1f,0x1c,0x19,0x1a};
 
 
-   public static String[][] AESSeq(String key, String plaintext){
+   public static String[][] AESDSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
-     String[][] result = AESStateXOR(plaintext, stringToMatrix(keys[keys.length-1]));
+     String[][] result = AESStateXOR(stringToMatrix(plaintext), stringToMatrix(keys[keys.length-1]));
+     outputHelper(result);
      result = REV_AESShiftRow(result);
+     outputHelper(result);
      result = REV_AESNibbleSub(result);
+     outputHelper(result);
 
      for(int i = keys.length-1; i >= 1; i--){
        result = AESStateXOR(result, stringToMatrix(keys[i]));
+       outputHelper(result);
        result = REV_AESMixColumn(result);
+       outputHelper(result);
        result = REV_AESShiftRow(result);
+       outputHelper(result);
        result = REV_AESNibbleSub(result);
+       outputHelper(result);
      }
        result = AESStateXOR(result, stringToMatrix(keys[0]));
+       outputHelper(result);
      //steps for the last round
      return result;
    }
@@ -217,24 +225,24 @@ public class AESDeCipher {
     String temp = "";
     //Will do research based on the resources you provided, but for now here's a hardcoded solution
 
-    for(int k = 0; k < 3; k++){
+    for(int k = 3; k > 0; k--){
       temp = inStateHex[k][1];
-      inStateHex[k][1] = inStateHex[k+1][1];
-      inStateHex[k+1][1] = temp;
+      inStateHex[k][1] = inStateHex[k-1][1];
+      inStateHex[k-1][1] = temp;
     }
-    for(int j = 0; j < 2; j++){
+    for(int j = 4; j > 2; j--){
       temp = inStateHex[j][2];
-      inStateHex[j][2] = inStateHex[j+2][2];
-      inStateHex[j+2][2] = temp;
+      inStateHex[j][2] = inStateHex[j-2][2];
+      inStateHex[j-2][2] = temp;
     }
 
-    for(int l = 0; l < 3; l++){
+    for(int l = 3; l > 0; l--){
       temp = inStateHex[l][3];
       inStateHex[l][3] = inStateHex[3][3];
       inStateHex[3][3] = temp;
     }
-    for(int c = 0; c < 4; c++){
-      for(int r = 0; r < 4; r++){
+    for(int c = 3; c >= 0; c--){
+      for(int r = 3; r >= 4; r--){
         result[r][c] = inStateHex[r][c];
       }
     }
@@ -279,6 +287,15 @@ public class AESDeCipher {
     }
     result += "0";
     return result;
+  }
+
+  public static void outputHelper(String[][] output){
+    for(int i= 0; i < output.length; i++){
+      for(int j = 0; j < output[i].length; j++){
+        System.out.print(output[j][i]);
+      }
+      System.out.println();
+    }
   }
 
 }
