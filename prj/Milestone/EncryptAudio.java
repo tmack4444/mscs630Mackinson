@@ -2,8 +2,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.File;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
+import java.io.Writer;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ public class EncryptAudio {
 
     public static void main(String[] args) throws IOException {
       Scanner input = new Scanner(System.in);
-    //  System.out.print("Enter File Name: ");
+      //System.out.print("Enter File Name: ");
       //String sourceFile = input.nextLine();
       String sourceFile = "plaintext.mp3";
       /*System.out.print("Enter Encryption Key: ");
@@ -52,36 +53,23 @@ public class EncryptAudio {
       for(int j = 0; j < Keys.length; j++){
         Keys[j] = encrypt.AESSeq(key, bufferToHexArray.substring(j*32, j*32 + 32));
       }
-      String[] output = new String[Keys.length];
+      BufferedWriter outputWriter = new BufferedWriter(new FileWriter("ciphertext.txt"));
       for(int i = 0; i < Keys.length; i++){
-        output[i] = "";
         for(int r = 1; r < Keys[i].length; r++){
           for(int c = 0; c < Keys[i][r].length; c++){
             if(Keys[i][r][c].length() == 1){
-              output[i] += "0";
+              outputWriter.write("0");
             }
             if(Keys[i][r][c] != null){
-              output[i] += Keys[i][r][c].toUpperCase();
+              outputWriter.write(Keys[i][r][c].toUpperCase());
             }
           }
         }
-        System.out.println(output[i]);
+        outputWriter.newLine();
       }
-
-      //System.out.println("Done!");
-
-      //Encrypt the file
-
-      //Instead of outputing the input stream, convert it to hex, and
-      // TODO
-      /*
-      OutputStream os = new FileOutputStream(resultFile);
-      byte[] buffer = new byte[1024];
-      int length;
-      while((length = is.read(buffer)) > 0) {
-        os.write(buffer, 0, length);
-      }
-      */
+      outputWriter.flush();
+      outputWriter.close();
+      System.out.println("Your key for decryption is: " + key);
     }
 
     public static String keyGen(){
