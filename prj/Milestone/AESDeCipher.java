@@ -76,17 +76,18 @@ public class AESDeCipher {
 
    public static String[][] AESSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
-     String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
-     for(int i = 1; i < keys.length-1; i++){
-       result = AESNibbleSub(result);
-       result = AESShiftRow(result);
-       result = AESMixColumn(result);
+     String[][] result = AESStateXOR(plaintext, stringToMatrix(keys[keys.length-1]));
+     result = REV_AESShiftRow(result);
+     result = REV_AESNibbleSub(result);
+
+     for(int i = keys.length-1; i >= 1; i--){
        result = AESStateXOR(result, stringToMatrix(keys[i]));
+       result = REV_AESMixColumn(result);
+       result = REV_AESShiftRow(result);
+       result = REV_AESNibbleSub(result);
      }
+       result = AESStateXOR(result, stringToMatrix(keys[0]));
      //steps for the last round
-     result = AESNibbleSub(result);
-     result = AESShiftRow(result);
-     result = AESStateXOR(result, stringToMatrix(keys[keys.length-1]));
      return result;
    }
 
@@ -201,7 +202,7 @@ public class AESDeCipher {
     return result;
   }
 
-  public static String[][] AESNibbleSub(String[][] inStateHex){
+  public static String[][] REV_AESNibbleSub(String[][] inStateHex){
     String[][] result = new String [4][4];
     for(int i = 0; i < 4; i++ ){
       for(int j = 0; j < 4; j++ ){
@@ -211,7 +212,7 @@ public class AESDeCipher {
     return result;
   }
 
-  public static String[][] AESShiftRow(String[][] inStateHex){
+  public static String[][] REV_AESShiftRow(String[][] inStateHex){
     String[][] result = new String [4][4];
     String temp = "";
     //Will do research based on the resources you provided, but for now here's a hardcoded solution
@@ -241,7 +242,7 @@ public class AESDeCipher {
 
   }
 
-  public static String[][] AESMixColumn(String[][] inStateHex){
+  public static String[][] REV_AESMixColumn(String[][] inStateHex){
     String[][] result = new String [4][4];
     String[] currentRow = new String [4];
     String[][] multMatrix = {{"02", "03", "01", "01"},
