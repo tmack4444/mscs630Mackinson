@@ -52,19 +52,20 @@ public class EncryptAudio {
       for(int j = 0; j < Keys.length; j++){
         Keys[j] = encrypt.AESSeq(key, bufferToHexArray.substring(j*32, j*32 + 32));
       }
-      int iterator = 0;
       String[] output = new String[Keys.length];
       for(int i = 0; i < Keys.length; i++){
-        for(int r = 0; r < Keys[i].length; r++){
+        output[i] = "";
+        for(int r = 1; r < Keys[i].length; r++){
           for(int c = 0; c < Keys[i][r].length; c++){
             if(Keys[i][r][c].length() == 1){
-              output[iterator] += "0";
+              output[i] += "0";
             }
-            output[iterator] += Keys[i][r][c];
+            if(Keys[i][r][c] != null){
+              output[i] += Keys[i][r][c].toUpperCase();
+            }
           }
         }
-        System.out.println(output[iterator]);
-        iterator++;
+        System.out.println(output[i]);
       }
 
       //System.out.println("Done!");
