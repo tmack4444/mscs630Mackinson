@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Scanner;
 
 public class DecryptAudio{
@@ -17,20 +20,23 @@ public class DecryptAudio{
     }
 
     try {
+      String sourceFile = "ciphertext.txt";
+      File cipher = new File(sourceFile);
+      BufferedReader reader = new BufferedReader(new FileReader(cipher));
+      List<String> list = reader.lines().collect(Collectors.toList());
+      String[] cipherText = new String[list.size()];
+      cipherText = list.toArray(cipherText);
+      reader.close();
+      for(int i = 0; i < cipherText.length; i++){
+        System.out.println(cipherText[i]);
+      }
 
-          String sourceFile = "ciphertext.txt";
-          BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
-          String[] cipherText = new String[ (int) reader.lines().count()];
-          for(int i = 0; i < cipherText.length; i++){
-            cipherText[i] = reader.readLine();
-            System.out.println(cipherText[i]);
-          }
-          reader.close();
 
+
+
+          
     } catch(IOException e){
       e.printStackTrace();
     }
-
   }
-
 }
