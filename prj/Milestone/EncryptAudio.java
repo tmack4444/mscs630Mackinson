@@ -69,7 +69,7 @@ public class EncryptAudio {
       }
       outputWriter.flush();
       outputWriter.close();
-      System.out.println("Your key for decryption is: " + key);
+      System.out.println("Your key for decryption is: " + key.toUpperCase());
     }
 
     public static String keyGen(){
