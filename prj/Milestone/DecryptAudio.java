@@ -37,13 +37,15 @@ public class DecryptAudio{
       byte[] decryptedData = new byte[output.length*16];
       int iterator = 0;
       for(int i = 0; i < output.length; i++){
-        for(int r = 0; r < 4; r++){
-          for(int c = 0; c < 4; c++){
-            decryptedData[iterator] = (byte) Integer.parseInt(output[i][r][c], 16);
+        for(int c = 0; c < 4; c++){
+          for(int r = 0; r < 4; r++){
+            decryptedData[iterator] = (byte) Integer.parseInt(output[i][c][r], 16);
+            iterator++;
           }
         }
       }
-      try (FileOutputStream fos = new FileOutputStream("decrypted.mp3")) {
+      try {
+        FileOutputStream fos = new FileOutputStream("decrypted.mp3");
         fos.write(decryptedData);
         fos.close();
       } catch(IOException e){
