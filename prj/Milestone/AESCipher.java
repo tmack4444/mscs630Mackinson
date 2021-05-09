@@ -75,11 +75,9 @@ public class AESCipher {
 
 
    public static String[][] AESSeq(String key, String plaintext){
-     System.out.println("Start encryption");
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
      for(int i = 1; i < keys.length-1; i++){
-       System.out.println(keys[i]);
        result = AESNibbleSub(result);
        result = AESShiftRow(result);
        result = AESMixColumn(result);
@@ -89,7 +87,6 @@ public class AESCipher {
      result = AESNibbleSub(result);
      result = AESShiftRow(result);
      result = AESStateXOR(result, stringToMatrix(keys[keys.length-1]));
-       System.out.println(keys[keys.length-1]);
      return result;
    }
 
