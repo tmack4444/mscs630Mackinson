@@ -1,8 +1,10 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
+import java.nio.file.Files;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Scanner;
@@ -28,12 +30,25 @@ public class DecryptAudio{
       cipherText = list.toArray(cipherText);
       reader.close();
       AESDeCipher decrypt = new AESDeCipher();
-      String[][] output = new String[4][4];
-      output = decrypt.AESDSeq(key, cipherText[0]);
-      
-
-
-
+      String[][][] output = new String[cipherText.length][4][4];
+      for(int j = 0; j < output.length ; j++){
+        output[j] = decrypt.AESDSeq(key, cipherText[j]);
+      }
+      byte[] decryptedData = new byte[output.length*16];
+      int iterator = 0;
+      for(int i = 0; i < output.length; i++){
+        for(int r = 0; r < 4; r++){
+          for(int c = 0; c < 4; c++){
+            decryptedData[iterator] = (byte) Integer.parseInt(output[i][r][c], 16);
+          }
+        }
+      }
+      try (FileOutputStream fos = new FileOutputStream("decrypted.mp3")) {
+        fos.write(decryptedData);
+        fos.close();
+      } catch(IOException e){
+        e.printStackTrace();
+      }
     } catch(IOException e){
       e.printStackTrace();
     }

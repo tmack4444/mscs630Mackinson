@@ -148,7 +148,6 @@ public class AESDeCipher {
    public static String[][] AESDSeq(String key, String plaintext){
      String[] keys = roundKeysHex(key);
      String[][] result = new String[4][4];
-     System.out.println(keys[keys.length-1]);
      result = AESStateXOR(stringToMatrix(plaintext), stringToMatrix(keys[keys.length-1]));
      //outputHelper(result);
      result = REV_AESShiftRow(result);
@@ -347,10 +346,10 @@ public class AESDeCipher {
   public static String[][] REV_AESMixColumn(String[][] inStateHex){
     String[][] result = new String [4][4];
     String[] currentRow = new String [4];
-    String[][] multMatrix = {{"02", "03", "01", "01"},
-                             {"01", "02", "03", "01"},
-                             {"01", "01", "02", "03"},
-                             {"03", "01", "01", "02"}};
+    String[][] multMatrix = {{"14", "11", "13", "09"},
+                             {"09", "14", "11", "13"},
+                             {"13", "09", "14", "11"},
+                             {"11", "13", "09", "14"}};
 
    for(int c = 0; c < 4; c++){
      for(int i = 0; i < 4; i++){
