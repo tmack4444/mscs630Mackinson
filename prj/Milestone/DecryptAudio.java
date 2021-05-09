@@ -27,12 +27,10 @@ public class DecryptAudio{
       String[] cipherText = new String[list.size()];
       cipherText = list.toArray(cipherText);
       reader.close();
-      System.out.println(cipherText[0]);
       AESDeCipher decrypt = new AESDeCipher();
       String[][] output = new String[4][4];
-      System.out.println(cipherText[0]);
       output = decrypt.AESDSeq(key, cipherText[0]);
-      System.out.println(output);
+      
 
 
 
