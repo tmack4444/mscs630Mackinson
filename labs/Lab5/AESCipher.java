@@ -87,6 +87,16 @@ public class AESCipher {
      result = AESNibbleSub(result);
      result = AESShiftRow(result);
      result = AESStateXOR(result, stringToMatrix(keys[keys.length-1]));
+     String output = "";
+     for(int i = 0; i < 4; i++){
+       for(int j = 0; j < 4; j++){
+         if(result[i][j].length() == 1)
+         output += "0";
+         output += result[i][j].toUpperCase();
+       }
+     }
+     output = output.trim();
+     System.out.print(output);
      return result;
    }
 
