@@ -97,7 +97,7 @@ public class AESCipher {
      }
      output = output.trim();
      System.out.print(output);
-     return result;
+     return output;
    }
 
    //Helper function to convert a 16 length string into a 4x4 matrix of
