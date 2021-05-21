@@ -7,16 +7,7 @@ public class Driver_lab5 {
    String input = in.nextLine();
    String plaintext = in.nextLine();
    AESCipher keygen = new AESCipher();
-   String[][] Keys = keygen.AESSeq(input, plaintext);
-   String output = "";
-   for(int i = 0; i < 4; i++){
-     for(int j = 0; j < 4; j++){
-       if(Keys[i][j].length() == 1)
-       output += "0";
-       output += Keys[i][j].toUpperCase();
-     }
-   }
-   output = output.trim();
+   String output = keygen.AESSeq(input, plaintext);
    System.out.print(output);
  }
 
