@@ -5,7 +5,7 @@ public class Driver_lab3b {
 
   public static void main(String [] args){
     Scanner in = new Scanner(System.in);
-    String pad = in.nextLine();
+    char pad = in.nextLine().charAt(0);
     String P = in.nextLine();
     int numPad = 16 % P.length();
     for(int i = 0; i < numPad; i++){
@@ -14,10 +14,9 @@ public class Driver_lab3b {
     int numArray = Math.max(1, P.length() / 16);
     int[][][] results = new int[numArray][4][4];
     for(int i = 0; i < numArray; i++) {
-      String p = P.substring(i*16, (i*16 + 16));
-      results[i] = getHexMatP('a', p);
+      String p = P.substring(i*16);
+      results[i] = getHexMatP(pad, p);
     }
-
     String output = "";
     for(int j = 0; j < numArray; j++){
       for(int k = 0; k < 4; k++){
@@ -32,9 +31,13 @@ public class Driver_lab3b {
     System.out.print(output);
   }
 
-  public static int[][] getHexMatP(char s, String p){
+  public static int[][] getHexMatP(char s, String P){
     int[][] result = new int[4][4];
     int currInd = 0;
+    while(P.length() <= 16){
+      P += s + "";
+    }
+    String p = P.substring(0, 16);
     for(int i = 0; i < 4; i++){
       for(int j = 0; j < 4; j++){
         int currVal = (p.charAt(currInd) + "").getBytes()[0];
