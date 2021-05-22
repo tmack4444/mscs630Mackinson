@@ -15,7 +15,7 @@ public class Driver_lab3b {
     int[][][] results = new int[numArray][4][4];
     for(int i = 0; i < numArray; i++) {
       String p = P.substring(i*16, (i*16 + 16));
-      results[i] = getHexMatP(p);
+      results[i] = getHexMatP('a', p);
     }
 
     String output = "";
@@ -32,7 +32,7 @@ public class Driver_lab3b {
     System.out.print(output);
   }
 
-  public static int[][] getHexMatP(String p){
+  public static int[][] getHexMatP(char s, String p){
     int[][] result = new int[4][4];
     int currInd = 0;
     for(int i = 0; i < 4; i++){
