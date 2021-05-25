@@ -12,7 +12,6 @@ public class EncryptAudio {
 
     public static void main(String[] args) throws IOException {
       Scanner input = new Scanner(System.in);
-      System.out.print("Enter File Name: ");
       String sourceFile = input.nextLine();
       /*System.out.print("Enter Encryption Key: ");
       String key = input.nextLine();
@@ -68,7 +67,7 @@ public class EncryptAudio {
       }
       outputWriter.flush();
       outputWriter.close();
-      System.out.println("Your key for decryption is: " + key.toUpperCase());
+      System.out.println(key.toUpperCase());
     }
 
     public static String keyGen(){

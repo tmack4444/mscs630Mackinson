@@ -40,8 +40,8 @@ public class Driver_lab3b {
     String p = P.substring(0, 16);
     for(int i = 0; i < 4; i++){
       for(int j = 0; j < 4; j++){
-        int currVal = (p.charAt(currInd) + "").getBytes()[0];
-        result[i][j] = currVal;
+        int currVal = Integer.parseInt(Integer.toHexString(p.charAt(currInd)), 16);
+        result[j][i] = currVal;
         currInd++;
       }
     }
