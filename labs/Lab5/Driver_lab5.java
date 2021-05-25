@@ -7,8 +7,8 @@ public class Driver_lab5 {
    String input = in.nextLine();
    String plaintext = in.nextLine();
    AESCipher keygen = new AESCipher();
-   String output = keygen.AESSeq(input, plaintext);
-   System.out.print(output);
+   String[] output = keygen.AES(plaintext, input);
+   System.out.print(output[0]);
  }
 
 }
