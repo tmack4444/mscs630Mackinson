@@ -74,7 +74,7 @@ public class AESCipher {
         0x0b,0x08,0x0d,0x0e,0x07,0x04,0x01,0x02,0x13,0x10,0x15,0x16,0x1f,0x1c,0x19,0x1a};
 
 
-   public static String AESSeq(String key, String plaintext){
+   public static String[] AES(String plaintext, String key){
      String[] keys = roundKeysHex(key);
      String[][] result = AESStateXOR(stringToMatrix(key), stringToMatrix(plaintext));
      for(int i = 1; i < keys.length-1; i++){
@@ -97,7 +97,8 @@ public class AESCipher {
      }
      output = output.trim();
      System.out.print(output);
-     return output;
+     String[] returnVal = {output};
+     return returnVal;
    }
 
    //Helper function to convert a 16 length string into a 4x4 matrix of
